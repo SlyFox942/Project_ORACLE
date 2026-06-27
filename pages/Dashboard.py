@@ -1,62 +1,101 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import plotly.express as px
 
-st.title("🔮 Project ORACLE")
+DB = "data/oracle.db"
 
-st.caption(
-    "Lottery Analytics & Research Platform"
+st.set_page_config(
+    page_title="Project ORACLE",
+    page_icon="🔮",
+    layout="wide"
 )
 
-conn = sqlite3.connect("data/oracle.db")
+st.title("🔮 Project ORACLE")
+st.caption("Lottery Analytics & Research Platform")
 
-try:
+# -----------------------------
+# Load Database
+# -----------------------------
+conn = sqlite3.connect(DB)
+df = pd.read_sql_query("SELECT * FROM drawings", conn)
+conn.close()
 
-    df = pd.read_sql_query(
-        "SELECT * FROM drawings",
-        conn
-    )
-
-finally:
-    conn.close()
-
-total_drawings = len(df)
-
+# -----------------------------
+# Metrics
+# -----------------------------
+total = len(df)
 mega = len(df[df["game"] == "Mega Millions"])
-
 power = len(df[df["game"] == "Powerball"])
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    st.metric(
-        "📊 Total Drawings",
-        total_drawings
-    )
-
-with col2:
-    st.metric(
-        "🎱 Mega Millions",
-        mega
-    )
-
-with col3:
-    st.metric(
-        "🔴 Powerball",
-        power
-    )
+col1.metric("📊 Total Drawings", total)
+col2.metric("🎱 Mega Millions", mega)
+col3.metric("🔴 Powerball", power)
+col4.metric("🟢 Database", "Connected")
 
 st.divider()
 
-st.subheader("Recent Drawings")
+# -----------------------------
+# Charts
+# -----------------------------
+if not df.empty:
 
-if df.empty:
-    st.warning("No drawings imported.")
-else:
+    numbers = pd.concat([
+        df["n1"],
+        df["n2"],
+        df["n3"],
+        df["n4"],
+        df["n5"]
+    ])
+
+    frequency = (
+        numbers.value_counts()
+        .sort_index()
+        .reset_index()
+    )
+
+    frequency.columns = ["Number", "Times Drawn"]
+
+    left, right = st.columns([2,1])
+
+    with left:
+
+        fig = px.bar(
+            frequency,
+            x="Number",
+            y="Times Drawn",
+            title="📈 Number Frequency"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    with right:
+
+        st.subheader("🔥 Top 10 Hot Numbers")
+
+        st.dataframe(
+            frequency.sort_values(
+                "Times Drawn",
+                ascending=False
+            ).head(10),
+            height=360,
+            use_container_width=True
+        )
+
+    st.divider()
+
+    st.subheader("📅 Latest Drawings")
+
     st.dataframe(
         df.sort_values(
             "draw_date",
             ascending=False
         ),
-        width="stretch"
+        use_container_width=True
     )
+
+else:
+
+    st.warning("Database is empty.")
