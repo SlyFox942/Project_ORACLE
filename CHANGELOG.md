@@ -1,21 +1,22 @@
-# 🔮 Project ORACLE Changelog
+# Changelog
 
-## v1.0.0
+## v2.0.0-beta
 
 ### Added
-- Streamlit application
-- SQLite database
-- Dashboard
-- Analytics page
-- Statistics page
-- Hot & Cold Numbers
-- ORACLE Score
-- Experimental Pick Generator
-- CSV Import
-- Git version control
 
-### Next
-- Historical lottery importer
-- Interactive heatmaps
-- Strategy backtesting
-- Research notebook
+- Executive Dashboard
+- ORACLE Insights Engine
+- Database Manager
+- Database Explorer
+- Database Health
+- Duplicate-safe imports
+- Heat Map
+- Trend Analysis
+- Pair Analysis
+
+### Improved
+
+- Shared components
+- Footer
+- Project structure
+- Dashboard layout
