@@ -28,8 +28,8 @@ if uploaded_file:
             temp_path = "downloads/uploaded_drawings.csv"
             df.to_csv(temp_path, index=False)
 
-            import_drawings_from_csv(temp_path, game)
+            imported, skipped = import_drawings_from_csv(temp_path, game)
 
-            st.success(f"{game} drawings imported successfully!")
+            st.success(f"{imported} drawings imported. {skipped} duplicates skipped.")
 
 show_footer()
