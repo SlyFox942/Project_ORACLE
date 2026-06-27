@@ -1,44 +1,34 @@
 import streamlit as st
-import sqlite3
-import pandas as pd
 
-DB_PATH = "data/oracle.db"
+from database.database_manager import DatabaseManager
+from components.footer import show_footer
 
 st.title("🗄️ Database Explorer")
 
-try:
-    conn = sqlite3.connect(DB_PATH)
+df = DatabaseManager.query(
+    "SELECT * FROM drawings ORDER BY draw_date DESC"
+)
 
-    df = pd.read_sql_query(
-        "SELECT * FROM drawings ORDER BY draw_date DESC",
-        conn
-    )
+st.metric("Total Drawings", len(df))
 
-    conn.close()
+if df.empty:
+    st.warning("Database is empty.")
+    show_footer()
+    st.stop()
 
-    st.metric("Total Drawings", len(df))
+col1, col2 = st.columns(2)
 
-    if df.empty:
-        st.warning("Database is empty.")
-        st.stop()
+col1.metric("Mega Millions", len(df[df["game"] == "Mega Millions"]))
+col2.metric("Powerball", len(df[df["game"] == "Powerball"]))
 
-    col1, col2 = st.columns(2)
+st.divider()
 
-    with col1:
-        st.metric("Mega Millions", len(df[df["game"] == "Mega Millions"]))
+st.subheader("Games in Database")
+st.write(df["game"].value_counts())
 
-    with col2:
-        st.metric("Powerball", len(df[df["game"] == "Powerball"]))
+st.divider()
 
-    st.divider()
+st.subheader("Latest Drawings")
+st.dataframe(df, width="stretch")
 
-    st.subheader("Games in Database")
-    st.write(df["game"].value_counts())
-
-    st.divider()
-
-    st.subheader("Latest Drawings")
-    st.dataframe(df, width="stretch")
-
-except Exception as e:
-    st.error(e)
+show_footer()
