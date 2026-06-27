@@ -1,21 +1,62 @@
 import streamlit as st
-from database.db import get_all_drawings
+import sqlite3
+import pandas as pd
 
 st.title("🔮 Project ORACLE")
 
-drawings = get_all_drawings()
+st.caption(
+    "Lottery Analytics & Research Platform"
+)
 
-mega = len([d for d in drawings if d[0] == "Mega Millions"])
-power = len([d for d in drawings if d[0] == "Powerball"])
+conn = sqlite3.connect("data/oracle.db")
 
-c1, c2, c3 = st.columns(3)
+try:
 
-c1.metric("📊 Total Drawings", len(drawings))
-c2.metric("🎱 Mega Millions", mega)
-c3.metric("🔴 Powerball", power)
+    df = pd.read_sql_query(
+        "SELECT * FROM drawings",
+        conn
+    )
+
+finally:
+    conn.close()
+
+total_drawings = len(df)
+
+mega = len(df[df["game"] == "Mega Millions"])
+
+power = len(df[df["game"] == "Powerball"])
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric(
+        "📊 Total Drawings",
+        total_drawings
+    )
+
+with col2:
+    st.metric(
+        "🎱 Mega Millions",
+        mega
+    )
+
+with col3:
+    st.metric(
+        "🔴 Powerball",
+        power
+    )
 
 st.divider()
 
-st.subheader("Latest Database Records")
+st.subheader("Recent Drawings")
 
-st.dataframe(drawings, width="stretch")
+if df.empty:
+    st.warning("No drawings imported.")
+else:
+    st.dataframe(
+        df.sort_values(
+            "draw_date",
+            ascending=False
+        ),
+        width="stretch"
+    )
