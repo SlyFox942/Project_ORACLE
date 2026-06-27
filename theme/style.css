@@ -1,0 +1,29 @@
+.main {
+    background-color: #0E1117;
+}
+
+.block-container {
+    padding-top: 2rem;
+}
+
+div[data-testid="metric-container"] {
+    background-color: #1E222A;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #30363d;
+}
+
+h1 {
+    color: #4CAF50;
+}
+
+h2 {
+    color: white;
+}
+
+.stButton>button {
+    border-radius: 12px;
+    background-color: #2E8B57;
+    color: white;
+    font-weight: bold;
+}
