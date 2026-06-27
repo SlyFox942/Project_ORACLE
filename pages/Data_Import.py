@@ -1,10 +1,14 @@
 import streamlit as st
 import pandas as pd
 
+from database.database_manager import DatabaseManager
 from services.data_importer import import_drawings_from_csv
 from components.footer import show_footer
 
 st.title("📥 Data Import")
+
+current_df = DatabaseManager.query("SELECT * FROM drawings")
+st.metric("Current Database Rows", len(current_df))
 
 st.write("Upload a lottery CSV file with these columns:")
 st.code("draw_date,n1,n2,n3,n4,n5,bonus")
@@ -30,6 +34,10 @@ if uploaded_file:
 
             imported, skipped = import_drawings_from_csv(temp_path, game)
 
-            st.success(f"{imported} drawings imported. {skipped} duplicates skipped.")
+            updated_df = DatabaseManager.query("SELECT * FROM drawings")
+
+            st.success(f"{imported} drawings imported.")
+            st.info(f"{skipped} duplicate drawings skipped.")
+            st.metric("Current Database Rows", len(updated_df))
 
 show_footer()
