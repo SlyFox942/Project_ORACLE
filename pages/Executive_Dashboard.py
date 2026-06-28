@@ -5,6 +5,14 @@ import plotly.express as px
 from database.database_manager import DatabaseManager
 from components.footer import show_footer
 from analysis.insights import generate_insights
+from pathlib import Path
+
+banner = Path("assets/oracle_banner.png")
+
+if banner.exists():
+    st.image(str(banner), use_container_width=True)
+
+st.title("📊 Executive Dashboard")
 
 st.set_page_config(
     page_title="Executive Dashboard",

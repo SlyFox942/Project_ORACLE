@@ -1,13 +1,16 @@
 # 🔮 Project ORACLE
 
-**Lottery Analytics & Research Platform**
+![Project ORACLE](assets/oracle_banner.png)
 
 Project ORACLE is a Python application built with Streamlit and SQLite that explores historical lottery drawing data through interactive dashboards and statistical analysis.
 
 > ⚠️ This project is for educational and statistical analysis purposes only. It does not predict future lottery outcomes.
 
 ---
+### Turning Data Into Insight
 
+A Python analytics platform demonstrating software engineering,
+data visualization, and statistical analysis using historical lottery data.
 ## ✨ Features
 
 - 📊 Executive Dashboard
