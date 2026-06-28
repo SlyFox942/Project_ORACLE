@@ -2,32 +2,42 @@
 
 ![Project ORACLE](assets/oracle_banner.png)
 
-Project ORACLE is a Python application built with Streamlit and SQLite that explores historical lottery drawing data through interactive dashboards and statistical analysis.
+## Turning Data Into Insight
 
-> ⚠️ This project is for educational and statistical analysis purposes only. It does not predict future lottery outcomes.
+**Project ORACLE** is a Python analytics platform that demonstrates software engineering, data visualization, database design, and statistical analysis using historical lottery data.
+
+This project was created to strengthen practical skills in:
+
+- 🐍 Python Development
+- 📊 Data Analytics
+- 📈 Data Visualization
+- 🗄 Database Design
+- 🌐 Streamlit Web Applications
+- 🔄 Git & GitHub Version Control
+- 🏗 Software Architecture
+
+> ⚠️ **Educational Notice**  
+> Project ORACLE is intended for educational and statistical analysis purposes only. It does **not** predict future lottery outcomes or increase the probability of winning.
 
 ---
-### Turning Data Into Insight
 
-A Python analytics platform demonstrating software engineering,
-data visualization, and statistical analysis using historical lottery data.
-## ✨ Features
+# ✨ Features
 
 - 📊 Executive Dashboard
-- 📥 CSV Data Import
+- 🤖 ORACLE Insights Engine
+- 📥 CSV Import with Duplicate Protection
 - 🗄 Database Explorer
-- 🩺 Database Health
-- 🔥 Heat Map
+- 🩺 Database Health Monitor
+- 🔥 Heat Map Analytics
 - 📈 Trend Analysis
 - 🎯 Pair Analysis
-- 🤖 ORACLE Insights Engine
 - 🎲 Experimental Pick Generator
 
 ---
 
-## 🛠 Technology Stack
+# 🛠 Technology Stack
 
-- Python 3
+- Python
 - Streamlit
 - SQLite
 - Pandas
@@ -37,67 +47,143 @@ data visualization, and statistical analysis using historical lottery data.
 
 ---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
-```
+```text
 Project_ORACLE/
 ├── analysis/
 ├── assets/
+│   ├── oracle_banner.png
+│   ├── oracle_full_logo.png
+│   └── oracle_icon.png
 ├── components/
 ├── database/
 ├── docs/
+├── downloads/
 ├── pages/
 ├── services/
 ├── tests/
+├── utils/
 ├── app.py
 ├── config.py
+├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+# 🚀 Getting Started
+
+Clone the repository:
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/YOUR-USERNAME/Project_ORACLE.git
+```
 
+Go into the project folder:
+
+```bash
 cd Project_ORACLE
+```
 
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
+Run ORACLE:
+
+```bash
 streamlit run app.py
 ```
 
 ---
 
-## 📸 Screenshots
+# 📸 Screenshots
 
-*(We'll add screenshots here after polishing the dashboard.)*
+## 🏠 Home Page
+
+*(Coming Soon)*
 
 ---
 
-## 🗺 Roadmap
+## 📊 Executive Dashboard
 
-### Version 2.0
+*(Coming Soon)*
+
+---
+
+## 🔥 ORACLE Insights
+
+*(Coming Soon)*
+
+---
+
+## 🗄 Database Explorer
+
+*(Coming Soon)*
+
+---
+
+# 🗺 Roadmap
+
+## ✅ Current Version
+
 - Executive Dashboard
-- ORACLE Insights
+- ORACLE Insights Engine
 - Database Health
-- Duplicate-safe imports
-- Modular architecture
+- Database Explorer
+- CSV Import
+- Duplicate Detection
+- Custom Branding
+- Dark Theme
+- Modular Architecture
 
-### Planned
-- Full historical dataset
-- Interactive heatmaps
-- Strategy backtesting
-- Automated tests
-- Cloud deployment
+### 🚀 Coming Soon
+
+- Complete Historical Lottery Database
+- Advanced Statistical Analytics
+- Strategy Backtesting
+- Interactive Heatmaps
+- Automated Testing
+- Cloud Deployment
+- Cybersecurity Toolkit
+- Business Analytics Modules
 
 ---
 
-## 👩‍💻 Author
+# 🌺 About the Branding
+
+The Project ORACLE logo reflects my personal background and technical interests.
+
+It combines:
+
+- 🌺 **Hibiscus** — representing my Puerto Rican heritage.
+- 🌸 **Cattleya trianae orchid** — representing my Colombian heritage.
+- 🔮 **Crystal Ball** — symbolizing insight, research, and discovery.
+- 📈 **Analytics Graph** — representing data analysis and software engineering.
+
+The branding represents both my cultural heritage and my passion for technology.
+
+---
+
+# 👩‍💻 About the Developer
 
 **Vanessa Aikin**
 
-Cybersecurity student and software developer passionate about Python, analytics, automation, and data-driven applications.
+Cybersecurity student, software developer, and entrepreneur passionate about building practical applications using Python, data analytics, automation, and cybersecurity.
+
+Project ORACLE serves as a portfolio project demonstrating software engineering, database design, interactive dashboards, and analytical problem-solving.
 
 ---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## ⭐ If you like this project...
+
+Feel free to ⭐ star the repository and follow its progress as Project ORACLE continues to grow.
