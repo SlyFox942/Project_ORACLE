@@ -40,4 +40,19 @@ if uploaded_file:
 
     st.success("Hashes generated successfully.")
 
+st.subheader("✅ Verify File Hash")
+
+known_hash = st.text_input(
+        "Paste a known hash to compare",
+        placeholder="Paste MD5, SHA-1, or SHA-256 hash here"
+    )
+
+if known_hash:
+        known_hash = known_hash.strip().lower()
+
+        if known_hash in [md5_hash, sha1_hash, sha256_hash]:
+            st.success("Hash match! File integrity verified.")
+        else:
+            st.error("Hash does not match this file.")
+
 show_footer()
