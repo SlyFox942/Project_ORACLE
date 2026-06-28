@@ -6,7 +6,12 @@ from database.database_manager import DatabaseManager
 from components.footer import show_footer
 from analysis.insights import generate_insights
 from pathlib import Path
+from pathlib import Path
 
+banner = Path("assets/oracle_banner.png")
+
+if banner.exists():
+    st.image(str(banner), use_container_width=True)
 banner = Path("assets/oracle_banner.png")
 
 if banner.exists():

@@ -2,12 +2,21 @@ import streamlit as st
 from config import VERSION, AUTHOR
 
 def show_footer():
+
     st.divider()
 
     st.caption(
-        f"🔮 Project ORACLE v{VERSION} • Built by {AUTHOR}"
+        f"🔮 Project ORACLE • Version {VERSION}"
     )
 
     st.caption(
-        "Turning Data Into Insight • Educational Analytics Platform"
+        "Data Analytics • Software Engineering • Cybersecurity"
+    )
+
+    st.caption(
+        "Turning Data Into Insight"
+    )
+
+    st.caption(
+        f"Built by {AUTHOR}"
     )

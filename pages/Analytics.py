@@ -1,62 +1,48 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from database.db import get_all_drawings
 
-st.title("📊 ORACLE Analytics")
+from database.database_manager import DatabaseManager
+from components.footer import show_footer
 
-drawings = get_all_drawings()
-
-if not drawings:
-    st.warning("No drawings found. Import data first.")
-    st.stop()
-
-records = []
-
-for row in drawings:
-    game, draw_date, n1, n2, n3, n4, n5, bonus = row
-
-    for number in [n1, n2, n3, n4, n5]:
-        records.append({
-            "Game": game,
-            "Number": number
-        })
-
-df = pd.DataFrame(records)
-
-game = st.selectbox(
-    "Choose Lottery",
-    sorted(df["Game"].unique())
+st.set_page_config(
+    page_title="Analytics Lab",
+    page_icon="📈",
+    layout="wide"
 )
 
-filtered = df[df["Game"] == game]
+st.title("📈 ORACLE Analytics Lab")
+st.caption("Explore historical drawing data")
+
+df = DatabaseManager.query("SELECT * FROM drawings")
+
+if df.empty:
+    st.warning("No data available.")
+    show_footer()
+    st.stop()
+
+game = st.selectbox(
+    "Choose Game",
+    sorted(df["game"].unique())
+)
+
+filtered = df[df["game"] == game]
+
+numbers = pd.concat([
+    filtered["n1"],
+    filtered["n2"],
+    filtered["n3"],
+    filtered["n4"],
+    filtered["n5"]
+])
 
 frequency = (
-    filtered["Number"]
-    .value_counts()
+    numbers.value_counts()
     .sort_index()
     .reset_index()
 )
 
 frequency.columns = ["Number", "Times Drawn"]
-
-# Summary Cards
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric("Drawn Numbers", len(filtered))
-
-with col2:
-    st.metric("Unique Numbers", filtered["Number"].nunique())
-
-with col3:
-    hottest = frequency.sort_values("Times Drawn", ascending=False).iloc[0]
-    st.metric(
-        "🔥 Hottest Number",
-        f'{int(hottest["Number"])} ({int(hottest["Times Drawn"])})'
-    )
-
-st.divider()
 
 fig = px.bar(
     frequency,
@@ -66,3 +52,5 @@ fig = px.bar(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
+show_footer()
