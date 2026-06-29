@@ -2,6 +2,7 @@ import streamlit as st
 import hashlib
 
 from components.footer import show_footer
+from database.db import get_connection
 
 st.title("🔐 File Hash Generator")
 st.caption("ORACLE Cyber Lab")
@@ -41,18 +42,45 @@ if uploaded_file:
     st.success("Hashes generated successfully.")
 
 st.subheader("✅ Verify File Hash")
-
 known_hash = st.text_input(
-        "Paste a known hash to compare",
-        placeholder="Paste MD5, SHA-1, or SHA-256 hash here"
-    )
+    "Paste a known hash to compare",
+    placeholder="Paste MD5, SHA-1, or SHA-256 hash here"
+)
 
-if known_hash:
+if uploaded_file:
+    # Verify provided known hash (if any)
+    if known_hash:
         known_hash = known_hash.strip().lower()
-
         if known_hash in [md5_hash, sha1_hash, sha256_hash]:
             st.success("Hash match! File integrity verified.")
         else:
             st.error("Hash does not match this file.")
+
+    # Save hash record to database
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO hash_history
+            (filename, filesize, md5, sha1, sha256)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                uploaded_file.name,
+                len(file_bytes),
+                md5_hash,
+                sha1_hash,
+                sha256_hash,
+            ),
+        )
+        conn.commit()
+    except Exception as e:
+        st.error(f"Failed to save hash history: {e}")
+    finally:
+        try:
+            conn.close()
+        except Exception:
+            pass
 
 show_footer()

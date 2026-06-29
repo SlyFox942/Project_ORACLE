@@ -26,6 +26,18 @@ def initialize_database():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS hash_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename TEXT,
+            filesize INTEGER,
+            md5 TEXT,
+            sha1 TEXT,
+            sha256 TEXT,
+            analyzed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -71,3 +83,30 @@ def get_all_drawings():
     conn.close()
 
     return rows
+
+from database.db import get_connection
+
+conn = get_connection()
+cursor = conn.cursor()
+
+def insert_hash_history(filename, filesize, md5_hash, sha1_hash, sha256_hash):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO hash_history
+        (filename, filesize, md5, sha1, sha256)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        (
+            filename,
+            filesize,
+            md5_hash,
+            sha1_hash,
+            sha256_hash
+        )
+    )
+
+    conn.commit()
+    conn.close()

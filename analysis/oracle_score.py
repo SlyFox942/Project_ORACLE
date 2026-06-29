@@ -4,14 +4,18 @@ from analysis.frequency import get_number_frequency
 def get_oracle_scores(game_name):
     frequency = get_number_frequency(game_name)
 
-    if not frequency:
+    if frequency is None or frequency.empty:
         return []
 
-    max_count = max(count for number, count in frequency)
+    max_count = frequency["Times Drawn"].max()
 
     scores = []
 
-    for number, count in frequency:
+    for _, row in frequency.iterrows():
+
+        number = int(row["Number"])
+        count = int(row["Times Drawn"])
+
         frequency_score = (count / max_count) * 100
 
         scores.append({
@@ -20,4 +24,9 @@ def get_oracle_scores(game_name):
             "Oracle Score": round(frequency_score, 2)
         })
 
-    return sorted(scores, key=lambda x: x["Oracle Score"], reverse=True)
+    scores.sort(
+        key=lambda x: x["Oracle Score"],
+        reverse=True
+    )
+
+    return scores
