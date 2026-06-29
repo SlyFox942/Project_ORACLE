@@ -73,7 +73,7 @@ if uploaded_file:
         st.warning(f"Medium suspicion score: {suspicion_score}")
     else:
         st.success(f"Low suspicion score: {suspicion_score}")
-        
+
     if ips:
         ip_counts = Counter(ips)
         ip_df = pd.DataFrame(
@@ -101,6 +101,27 @@ if uploaded_file:
 
     st.subheader("🔥 Errors & Critical Events")
 
+    st.subheader("📤 Export Suspicious Events")
+
+    suspicious_events = failed_lines + error_lines + warning_lines
+
+    if suspicious_events:
+        export_df = pd.DataFrame(
+            suspicious_events,
+            columns=["Log Line"]
+        )
+
+        csv_data = export_df.to_csv(index=False).encode("utf-8")
+
+        st.download_button(
+            label="Download Suspicious Events CSV",
+            data=csv_data,
+            file_name="oracle_suspicious_events.csv",
+            mime="text/csv"
+        )
+    else:
+        st.info("No suspicious events available to export.")
+        
     if error_lines:
         st.dataframe(
             pd.DataFrame(error_lines, columns=["Log Line"]),
