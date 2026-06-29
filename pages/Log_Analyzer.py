@@ -58,6 +58,22 @@ if uploaded_file:
 
     st.subheader("🌐 Top IP Addresses")
 
+    suspicion_score = (
+        len(failed_lines) * 2
+        + len(error_lines) * 3
+        + len(warning_lines)
+        + len(set(ips))
+    )
+
+    st.subheader("🚨 Suspicion Score")
+
+    if suspicion_score >= 50:
+        st.error(f"High suspicion score: {suspicion_score}")
+    elif suspicion_score >= 20:
+        st.warning(f"Medium suspicion score: {suspicion_score}")
+    else:
+        st.success(f"Low suspicion score: {suspicion_score}")
+        
     if ips:
         ip_counts = Counter(ips)
         ip_df = pd.DataFrame(
