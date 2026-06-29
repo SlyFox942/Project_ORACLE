@@ -74,6 +74,56 @@ if uploaded_file:
     else:
         st.success(f"Low suspicion score: {suspicion_score}")
 
+    st.subheader("🔎 Top Suspicious Keywords")
+
+    keyword_list = failed_keywords + warning_keywords + error_keywords
+
+    keyword_counts = {}
+
+    for keyword in keyword_list:
+        keyword_counts[keyword] = content.lower().count(keyword)
+
+    keyword_df = pd.DataFrame(
+        keyword_counts.items(),
+        columns=["Keyword", "Count"]
+    ).sort_values("Count", ascending=False)
+
+    st.dataframe(keyword_df, width="stretch")
+
+        st.subheader("📊 Log Severity Breakdown")
+
+    severity_rows = []
+
+    for line in lines:
+        lower_line = line.lower()
+
+        if any(word in lower_line for word in error_keywords):
+            severity = "Error / Critical"
+        elif any(word in lower_line for word in failed_keywords):
+            severity = "Failed / Suspicious"
+        elif any(word in lower_line for word in warning_keywords):
+            severity = "Warning"
+        else:
+            severity = "Informational"
+
+        severity_rows.append({
+            "Severity": severity,
+            "Log Line": line
+        })
+
+    severity_df = pd.DataFrame(severity_rows)
+
+    severity_counts = (
+        severity_df["Severity"]
+        .value_counts()
+        .reset_index()
+    )
+
+    severity_counts.columns = ["Severity", "Count"]
+
+    st.dataframe(severity_counts, width="stretch")
+    st.bar_chart(severity_counts.set_index("Severity"))
+    
     if ips:
         ip_counts = Counter(ips)
         ip_df = pd.DataFrame(
@@ -121,7 +171,7 @@ if uploaded_file:
         )
     else:
         st.info("No suspicious events available to export.")
-        
+
     if error_lines:
         st.dataframe(
             pd.DataFrame(error_lines, columns=["Log Line"]),
