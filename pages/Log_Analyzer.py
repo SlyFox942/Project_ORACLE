@@ -28,6 +28,7 @@ if uploaded_file:
     failed_keywords = ["failed", "failure", "invalid", "denied", "unauthorized"]
     warning_keywords = ["warning", "warn"]
     error_keywords = ["error", "critical", "fatal"]
+
     ioc_keywords = [
         "powershell", "cmd.exe", "mimikatz", "psexec", "rundll32",
         "regsvr32", "wget", "curl", "nc.exe", "certutil"
@@ -42,8 +43,8 @@ if uploaded_file:
 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Total Lines", len(lines))
-    c2.metric("File Size", f"{len(content.encode('utf-8'))} bytes")
-    c3.metric("Unique IPs", len(set(ips)))
+    c2.metric("Unique IPs", len(set(ips)))
+    c3.metric("Failed Events", len(failed_lines))
     c4.metric("IOC Hits", len(ioc_hits))
 
     st.divider()
@@ -73,41 +74,13 @@ if uploaded_file:
 
     st.divider()
 
-    st.subheader("📊 Log Severity Breakdown")
-
-    severity_rows = []
-
-    for line in lines:
-        lower_line = line.lower()
-
-        if any(word in lower_line for word in error_keywords):
-            severity_label = "Error / Critical"
-        elif any(word in lower_line for word in failed_keywords):
-            severity_label = "Failed / Suspicious"
-        elif any(word in lower_line for word in warning_keywords):
-            severity_label = "Warning"
-        else:
-            severity_label = "Informational"
-
-        severity_rows.append({
-            "Severity": severity_label,
-            "Log Line": line
-        })
-
-    severity_df = pd.DataFrame(severity_rows)
-    severity_counts = severity_df["Severity"].value_counts().reset_index()
-    severity_counts.columns = ["Severity", "Count"]
-
-    st.dataframe(severity_counts, width="stretch")
-    st.bar_chart(severity_counts.set_index("Severity"))
-
-    st.divider()
-
     st.subheader("🌐 Top IP Addresses")
 
     if ips:
-        ip_counts = Counter(ips)
-        ip_df = pd.DataFrame(ip_counts.most_common(10), columns=["IP Address", "Count"])
+        ip_df = pd.DataFrame(
+            Counter(ips).most_common(10),
+            columns=["IP Address", "Count"]
+        )
         st.dataframe(ip_df, width="stretch")
         st.bar_chart(ip_df.set_index("IP Address"))
     else:
@@ -115,16 +88,16 @@ if uploaded_file:
 
     st.divider()
 
-    st.subheader("🔎 Top Suspicious Keywords")
+    st.subheader("🔎 Suspicious Keyword Counts")
 
     keyword_list = failed_keywords + warning_keywords + error_keywords + ioc_keywords
-    keyword_counts = {
-        keyword: content.lower().count(keyword)
-        for keyword in keyword_list
-    }
 
-    keyword_df = pd.DataFrame(keyword_counts.items(), columns=["Keyword", "Count"])
-    keyword_df = keyword_df.sort_values("Count", ascending=False)
+    keyword_df = pd.DataFrame(
+        {
+            "Keyword": keyword_list,
+            "Count": [content.lower().count(word) for word in keyword_list]
+        }
+    ).sort_values("Count", ascending=False)
 
     st.dataframe(keyword_df, width="stretch")
 
@@ -140,27 +113,21 @@ if uploaded_file:
 
     st.divider()
 
-    st.subheader("🚫 Failed / Suspicious Events")
+    st.subheader("📊 Event Summary")
 
-    if failed_lines:
-        st.dataframe(pd.DataFrame(failed_lines, columns=["Log Line"]), width="stretch")
-    else:
-        st.success("No failed login or access-denied keywords found.")
+    summary_df = pd.DataFrame({
+        "Category": ["Failed", "Warnings", "Errors", "IOC Hits"],
+        "Count": [len(failed_lines), len(warning_lines), len(error_lines), len(ioc_hits)]
+    })
 
-    st.divider()
-
-    st.subheader("🔥 Errors & Critical Events")
-
-    if error_lines:
-        st.dataframe(pd.DataFrame(error_lines, columns=["Log Line"]), width="stretch")
-    else:
-        st.success("No error or critical keywords found.")
+    st.dataframe(summary_df, width="stretch")
+    st.bar_chart(summary_df.set_index("Category"))
 
     st.divider()
 
     st.subheader("📤 Export Suspicious Events")
 
-    suspicious_events = failed_lines + error_lines + warning_lines + ioc_hits
+    suspicious_events = failed_lines + warning_lines + error_lines + ioc_hits
 
     if suspicious_events:
         export_df = pd.DataFrame(suspicious_events, columns=["Log Line"])
@@ -174,6 +141,44 @@ if uploaded_file:
         )
     else:
         st.info("No suspicious events available to export.")
+
+    st.divider()
+
+    st.subheader("📝 Incident Summary")
+
+    incident_summary = f"""
+SOC INCIDENT SUMMARY
+
+Threat Level: {severity}
+Suspicion Score: {suspicion_score}
+
+Total Lines: {len(lines)}
+Unique IP Addresses: {len(set(ips))}
+Failed Events: {len(failed_lines)}
+Warnings: {len(warning_lines)}
+Errors: {len(error_lines)}
+IOC Matches: {len(ioc_hits)}
+
+Recommendation:
+"""
+
+    if suspicion_score >= 100:
+        incident_summary += "Immediate investigation recommended. Review IOC matches and isolate affected systems."
+    elif suspicion_score >= 50:
+        incident_summary += "High-risk activity detected. Review authentication attempts and suspicious IP addresses."
+    elif suspicion_score >= 20:
+        incident_summary += "Moderate suspicious activity detected. Continue monitoring."
+    else:
+        incident_summary += "No significant indicators detected."
+
+    st.text_area("Generated Report", incident_summary, height=260)
+
+    st.download_button(
+        label="Download Incident Report",
+        data=incident_summary,
+        file_name="oracle_incident_report.txt",
+        mime="text/plain"
+    )
 
     st.divider()
 
