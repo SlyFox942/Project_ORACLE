@@ -16,67 +16,60 @@ logo = Path("assets/oracle_full_logo.png")
 if banner.exists():
     st.image(str(banner), use_container_width=True)
 
-left, right = st.columns([1,2])
+col1, col2 = st.columns([1, 2])
 
-with left:
-
+with col1:
     if logo.exists():
         st.image(str(logo), width=260)
 
-with right:
-
+with col2:
     st.title("🔮 Project ORACLE")
-
-    st.markdown("## Data Analytics • Software Engineering • Cybersecurity")
-
-    st.success("### Turning Data Into Insight")
-
+    st.markdown("### Analytics • Cybersecurity • Intelligence")
+    st.success("Turning Data Into Insight")
     st.write(
         """
-Project ORACLE is a modern analytics platform built with Python,
-Streamlit, SQLite, Plotly and Pandas.
-
-Originally created as a lottery analytics platform,
-ORACLE has evolved into a showcase of software engineering,
-interactive dashboards, statistical analysis, and future
-cybersecurity tooling.
-"""
+        Project ORACLE is a Python analytics and cybersecurity platform
+        built with Streamlit, SQLite, Pandas, Plotly, GitHub Actions,
+        and modular software architecture.
+        """
     )
+    st.caption(f"Version {VERSION}")
 
 st.divider()
 
-st.subheader("🚀 Explore ORACLE")
+st.subheader("🚀 Choose Your Lab")
 
-c1, c2, c3 = st.columns(3)
+a1, a2 = st.columns(2)
 
-with c1:
+with a1:
+    st.markdown("## 📊 Analytics Lab")
+    st.write("Explore historical data, dashboards, predictions, trends, and visual insights.")
+    st.page_link("pages/Executive_Dashboard.py", label="📊 Executive Dashboard")
+    st.page_link("pages/Analytics_Lab.py", label="📈 Analytics Lab")
+    st.page_link("pages/Predictions.py", label="🎲 Predictions")
+    st.page_link("pages/Oracle_Score.py", label="🔮 ORACLE Score")
 
-    st.page_link("pages/Executive_Dashboard.py",
-                 label="📊 Executive Dashboard")
+with a2:
+    st.markdown("## 🛡 Cyber Lab")
+    st.write("Analyze logs, hashes, indicators, MITRE mappings, and threat signals.")
+    st.page_link("pages/Log_Analyzer.py", label="📄 SOC Log Analyzer")
+    st.page_link("pages/File_Hash_Generator.py", label="🔐 File Hash Generator")
+    st.page_link("pages/Hash_History.py", label="📝 Hash History")
+    st.page_link("pages/Threat_Dashboard.py", label="🛡 Threat Dashboard")
 
-    st.page_link("pages/Statistics.py",
-                 label="📈 Statistics")
+st.divider()
 
-    st.page_link("pages/Heat_Map.py",
-                 label="🔥 Heat Map")
+st.subheader("🗄 Data & System")
 
-with c2:
+d1, d2, d3 = st.columns(3)
 
-    st.page_link("pages/Database_Explorer.py",
-                 label="🗄 Database Explorer")
+with d1:
+    st.page_link("pages/Data_Import.py", label="📥 Data Import")
 
-    st.page_link("pages/Database_Health.py",
-                 label="🩺 Database Health")
+with d2:
+    st.page_link("pages/Database_Explorer.py", label="🗄 Database Explorer")
 
-    st.page_link("pages/Data_Import.py",
-                 label="📥 Import Data")
-
-with c3:
-
-    st.page_link("pages/Oracle_AI.py",
-                 label="🤖 ORACLE AI")
-
-    st.page_link("pages/Predictions.py",
-                 label="🎲 Predictions")
+with d3:
+    st.page_link("pages/Database_Health.py", label="🩺 Database Health")
 
 show_footer()
