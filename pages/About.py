@@ -1,26 +1,55 @@
 import streamlit as st
-from config import VERSION
+
+from config import APP_NAME, VERSION, AUTHOR
+from components.header import show_header
+from components.sidebar import show_sidebar
 from components.footer import show_footer
 
-st.title("ℹ️ About Project ORACLE")
+st.set_page_config(
+    page_title="About Project ORACLE",
+    page_icon="🔮",
+    layout="wide"
+)
 
-st.markdown(f"""
-## Version
+show_sidebar()
+show_header()
 
-**{VERSION}**
+st.header("📖 About Project ORACLE")
 
-## Purpose
+st.write("""
+Project ORACLE is an analytics and cybersecurity platform
+built entirely in Python.
 
-Project ORACLE demonstrates:
+It demonstrates modern software engineering practices,
+interactive analytics, cybersecurity tools, and modular
+application design.
 
-- Python programming
-- SQLite databases
-- Data visualization
-- Software architecture
-- Statistical analysis
-- Git & GitHub workflow
-
-This application is intended for educational and analytical purposes.
+The platform combines data visualization, log analysis,
+file hashing, threat intelligence, and statistical
+analysis into one application.
 """)
+
+st.subheader("🛠 Technologies")
+
+st.markdown("""
+- 🐍 Python
+- 🎈 Streamlit
+- 🗄 SQLite
+- 🐼 Pandas
+- 📈 Plotly
+- 🔄 Git
+- ☁ GitHub
+- ⚙ GitHub Actions
+- 🧪 PyTest
+- 🏗 Modular Architecture
+""")
+
+st.subheader("👩‍💻 Author")
+
+st.write(f"**{AUTHOR}**")
+
+st.subheader("🚀 Current Version")
+
+st.success(f"{APP_NAME} Version {VERSION}")
 
 show_footer()
