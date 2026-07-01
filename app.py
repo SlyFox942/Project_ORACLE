@@ -2,6 +2,7 @@ import streamlit as st
 from utils.theme import load_css
 from pathlib import Path
 import streamlit as st
+from components.sidebar import show_sidebar
 
 st.set_page_config(
     page_title="Project ORACLE",

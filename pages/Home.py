@@ -51,13 +51,17 @@ with a1:
 
 with a2:
     st.markdown("## 🛡 Cyber Lab")
+    st.page_link(
+    "pages/ORACLE_Assistant.py",
+    label="🤖 ORACLE Assistant"
+)
     st.page_link("pages/MITRE_Explorer.py", label="🎯 MITRE ATT&CK Explorer")
     st.write("Analyze logs, hashes, indicators, MITRE mappings, and threat signals.")
     st.page_link("pages/Log_Analyzer.py", label="📄 SOC Log Analyzer")
     st.page_link("pages/File_Hash_Generator.py", label="🔐 File Hash Generator")
     st.page_link("pages/Hash_History.py", label="📝 Hash History")
     st.page_link("pages/Threat_Dashboard.py", label="🛡 Threat Dashboard")
-    
+
 st.divider()
 
 st.subheader("🗄 Data & System")
