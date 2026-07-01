@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from components.sidebar import show_sidebar
 
 from database.database_manager import DatabaseManager
 from components.footer import show_footer
@@ -24,6 +25,8 @@ st.set_page_config(
     page_icon="📊",
     layout="wide"
 )
+
+show_sidebar()
 
 st.title("📊 Executive Dashboard")
 st.caption("Project ORACLE Intelligence Center")
