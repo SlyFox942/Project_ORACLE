@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+
+  oracle:
+
+    build: .
+
+    ports:
+      - "8501:8501"
+
+    command: streamlit run app.py
+
+  api:
+
+    build: .
+
+    ports:
+      - "8000:8000"
+
+    command: uvicorn api.app:app --host 0.0.0.0 --port 8000
